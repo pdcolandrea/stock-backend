@@ -26,6 +26,7 @@ const validate =
       },
       { abortEarly: false, stripUnknown: true }
     );
+
     if (!error) {
       next();
     }

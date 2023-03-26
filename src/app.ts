@@ -4,8 +4,13 @@ import helmet from 'helmet';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import compressFilter from './utils/compressFilter.util';
-import { authRouter, passwordRouter, verifyEmailRouter } from './routes/v1';
-import isAuth from './middleware/isAuth';
+import {
+  authRouter,
+  passwordRouter,
+  tradeRouter,
+  verifyEmailRouter
+} from './routes/v1';
+import isAuth, { auth } from './middleware/isAuth';
 import { errorHandler } from './middleware/errorHandler';
 import config from './config/config';
 import authLimiter from './middleware/authLimiter';
@@ -22,7 +27,7 @@ app.use(express.json());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
-app.use(xssMiddleware);
+// app.use(xssMiddleware);
 
 app.use(cookieParser());
 
@@ -48,9 +53,14 @@ app.use('/api/v1', passwordRouter);
 
 app.use('/api/v1', verifyEmailRouter);
 
-app.use('/secret', isAuth, (_req, res) => {
+app.use('/api/v1', isAuth, tradeRouter);
+
+app.use('/secret', isAuth, async (_req, res) => {
+  console.warn(_req.payload);
+  const user = await auth(_req);
   res.json({
-    message: 'You can see me'
+    message: 'You can see me',
+    user
   });
 });
 

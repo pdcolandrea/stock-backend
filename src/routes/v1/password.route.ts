@@ -5,8 +5,16 @@ import {
   resetPasswordSchema
 } from '../../validations/password.validation';
 import * as passwordController from '../../controller/forgotPassword.controller';
+import logger from '../../middleware/logger';
+import AlphaVantage from '../../services/alpha-vantage';
 
 const passwordRouter = Router();
+
+passwordRouter.get('/t', async (req, res) => {
+  logger.info(req);
+  const resp = await AlphaVantage.getForexRate('GME');
+  res.status(200).send({ resp });
+});
 
 passwordRouter.post(
   '/forgot-password',

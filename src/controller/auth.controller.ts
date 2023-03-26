@@ -127,7 +127,7 @@ export const handleLogin = async (
 
   // check if email is verified
   if (!user.emailVerified) {
-    res.send(httpStatus.UNAUTHORIZED).json({
+    res.status(httpStatus.UNAUTHORIZED).json({
       message: 'Your email is not verified! Please confirm your email!'
     });
   }
@@ -197,6 +197,7 @@ export const handleLogin = async (
       return res.sendStatus(httpStatus.UNAUTHORIZED);
     }
   } catch (err) {
+    logger.error(err);
     return res.sendStatus(httpStatus.INTERNAL_SERVER_ERROR);
   }
 };

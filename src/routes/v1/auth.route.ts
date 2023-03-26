@@ -7,7 +7,7 @@ const authRouter = Router();
 
 authRouter.post('/signup', validate(signupSchema), authController.handleSingUp);
 
-authRouter.post('/login', validate(loginSchema), authController.handleLogin);
+authRouter.post('/login', authController.handleLogin);
 
 authRouter.post('/logout', authController.handleLogout);
 

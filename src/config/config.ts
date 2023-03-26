@@ -35,6 +35,9 @@ const config = {
       }
     },
     from: process.env.EMAIL_FROM
+  },
+  alphaVantage: {
+    KEY: process.env.ALPHA_VANTAGE_API
   }
 } as const;
 

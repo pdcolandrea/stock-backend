@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import { User } from '@prisma/client';
 import type { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 
 import jwt, { type JwtPayload } from 'jsonwebtoken';
 import config from '../config/config';
+import prismaClient from '../config/prisma';
 
 // Why does 'jsonwebtoken' not support es6 module support ?????
 // Maybe in future this will be added.....
@@ -36,5 +38,22 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
     }
   );
 };
+
+export const auth = (req: Request) =>
+  prismaClient.user.findUnique({
+    where: {
+      id: req.payload?.userId ?? req.payload?.userID
+    },
+    select: {
+      id: true,
+      accounts: true,
+      email: true,
+      name: true,
+      emailVerified: true,
+      resetToken: true,
+      emailVerificationToken: true,
+      refreshTokens: true
+    }
+  });
 
 export default isAuth;
