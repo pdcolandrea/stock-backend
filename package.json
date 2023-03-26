@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
+    "alphavantage": "^2.4.1",
     "argon2": "^0.30.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
@@ -42,7 +43,8 @@
     "utility-types": "^3.10.0",
     "uuid": "^9.0.0",
     "winston": "^3.8.2",
-    "xss": "^1.0.14"
+    "xss": "^1.0.14",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@tsconfig/node-lts-strictest-esm": "^18.12.1",

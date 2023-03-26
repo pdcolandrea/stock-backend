@@ -42,6 +42,7 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
 export const auth = (req: Request) =>
   prismaClient.user.findUnique({
     where: {
+      // @ts-expect-error different in places
       id: req.payload?.userId ?? req.payload?.userID
     },
     select: {
