@@ -2,7 +2,10 @@ import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { auth } from '../middleware/isAuth';
 import prismaClient from '../config/prisma';
-import { makeTradeSchema } from '../validations/trade.validation';
+import {
+  getTradeSchema,
+  makeTradeSchema
+} from '../validations/trade.validation';
 import AlphaVantage from '../services/alpha-vantage';
 import { Order, Trade } from '@prisma/client';
 import logger from '../middleware/logger';
@@ -38,16 +41,57 @@ import logger from '../middleware/logger';
 //   res.status(200).json({ message: 'Email verification successful' });
 // };
 
-export const handleAllTrades = async (req: Request, res: Response) => {
-  const user = auth(req);
-  res.status(200).json(user);
+export const getTrade = async (req: Request, res: Response) => {
+  const { id } = getTradeSchema.parse(req).params;
+
+  const trade = await prismaClient.trade.findUnique({
+    where: {
+      id: parseInt(id)
+    }
+  });
+  if (!trade) {
+    return res.status(400).json({ message: 'Unable to find trade' });
+  }
+
+  res.status(200).json({ trade });
 };
 
+// create order
+export const handleBuy = async (req: Request, res: Response) => {
+  const { body } = makeTradeSchema.parse(req);
+  const user = await auth(req);
+
+  // TODO: ALSO PARSE TICKER? DO SEARCH BEFORE IMPORT
+
+  if (body.crypto) {
+  } else {
+  }
+
+  const pricing = await AlphaVantage.getForexRate(body.ticker);
+  let price: number;
+  try {
+    price = parseFloat(
+      pricing['Realtime Currency Exchange Rate']['5. Exchange Rate']
+    );
+  } catch (err) {
+    logger.warn(err);
+    return res.status(httpStatus.BAD_REQUEST).json({
+      message: `Unable to find pricing data for ticker: ${body.ticker}`
+    });
+  }
+};
+
+// GET THIS OUT
+// can handle 2M inserts/month for FREE on Planetscale if averaging 5write/req
 export const makeTrade = async (req: Request, res: Response) => {
   const { body } = makeTradeSchema.parse(req);
   const user = await auth(req);
 
   // TODO: ALSO PARSE TICKER? DO SEARCH BEFORE IMPORT
+
+  if (body.crypto) {
+  } else {
+  }
 
   const pricing = await AlphaVantage.getForexRate(body.ticker);
   let price: number;
@@ -161,5 +205,5 @@ export const makeTrade = async (req: Request, res: Response) => {
     });
   }
 
-  res.status(200).send({ status: 'success' });
+  res.status(200).json({ status: 'success', trade, order });
 };

@@ -7,16 +7,16 @@ import {
 import * as emailController from '../../controller/verifyEmail.controller';
 import * as tradeController from '../../controller/trade.controller';
 import {
-  getAllTradesSchema,
+  getTradeSchema,
   makeTradeSchema
 } from '../../validations/trade.validation';
 
 const tradeRouter = Router();
 
 tradeRouter.get(
-  '/trades',
-  validate(getAllTradesSchema),
-  tradeController.handleAllTrades
+  '/trade/:id',
+  zodValidate(getTradeSchema),
+  tradeController.getTrade
 );
 
 tradeRouter.post(

@@ -15,6 +15,7 @@ import { errorHandler } from './middleware/errorHandler';
 import config from './config/config';
 import authLimiter from './middleware/authLimiter';
 import { xssMiddleware } from './middleware/xssMiddleware';
+import AlphaVantage from './services/alpha-vantage';
 
 const app: Express = express();
 

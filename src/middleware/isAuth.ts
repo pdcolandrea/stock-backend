@@ -40,9 +40,9 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
 };
 
 export const auth = async (req: Request): Promise<User> =>
+  // @ts-expect-error different in places
   prismaClient.user.findUnique({
     where: {
-      // @ts-expect-error different in places
       id: req.payload?.userId ?? req.payload?.userID
     }
   });
