@@ -14,7 +14,9 @@ export const getAllTradesSchema = {
 
 export const makeTradeSchema = z.object({
   body: z.object({
-    ticker: z.string().min(1),
-    fromCurrency: z.string().min(3)
+    ticker: z.string().min(3),
+    amount: z.number().min(1),
+    orderID: z.string().optional(),
+    tradeID: z.string().optional()
   })
 });

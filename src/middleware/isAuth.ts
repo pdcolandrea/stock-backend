@@ -39,21 +39,11 @@ const isAuth = (req: Request, res: Response, next: NextFunction) => {
   );
 };
 
-export const auth = (req: Request) =>
+export const auth = async (req: Request): Promise<User> =>
   prismaClient.user.findUnique({
     where: {
       // @ts-expect-error different in places
       id: req.payload?.userId ?? req.payload?.userID
-    },
-    select: {
-      id: true,
-      accounts: true,
-      email: true,
-      name: true,
-      emailVerified: true,
-      resetToken: true,
-      emailVerificationToken: true,
-      refreshTokens: true
     }
   });
 
