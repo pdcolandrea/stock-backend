@@ -1,12 +1,15 @@
 import { Router } from 'express';
-import validate from '../../middleware/validate';
+import validate, { zodValidate } from '../../middleware/validate';
 import {
   sendVerifyEmailSchema,
   verifyEmailSchema
 } from '../../validations/verifyEmail.validation';
 import * as emailController from '../../controller/verifyEmail.controller';
 import * as tradeController from '../../controller/trade.controller';
-import { getAllTradesSchema } from '../../validations/trade.validation';
+import {
+  getAllTradesSchema,
+  makeTradeSchema
+} from '../../validations/trade.validation';
 
 const tradeRouter = Router();
 
@@ -14,6 +17,12 @@ tradeRouter.get(
   '/trades',
   validate(getAllTradesSchema),
   tradeController.handleAllTrades
+);
+
+tradeRouter.post(
+  '/trade',
+  zodValidate(makeTradeSchema),
+  tradeController.makeTrade
 );
 
 tradeRouter.post(

@@ -2,6 +2,7 @@ import type { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { auth } from '../middleware/isAuth';
 import prismaClient from '../config/prisma';
+import { makeTradeSchema } from '../validations/trade.validation';
 
 // export const handleVerifyEmail = async (req: Request, res: Response) => {
 //   const { token } = req.params;
@@ -37,4 +38,11 @@ import prismaClient from '../config/prisma';
 export const handleAllTrades = async (req: Request, res: Response) => {
   const user = auth(req);
   res.status(200).json(user);
+};
+
+export const makeTrade = async (req: Request, res: Response) => {
+  //   const { body } = makeTradeSchema.parse(req);
+  //   const user = await auth(req);
+
+  res.status(200).send({ s: 'SDS' });
 };
